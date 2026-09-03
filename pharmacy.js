@@ -20,21 +20,18 @@ export class Pharmacy {
   }
 
   updateBenefit(drug) {
-    if (drug.name == "Magic Pill") {
-      return;
+    switch (drug.name) {
+      case "Magic Pill":
+        return;
+      case "Herbal Tea":
+        this.updateHerbalTeaBenefit(drug);
+        return;
+      case "Fervex":
+        this.updateFervexBenefit(drug);
+        return;
+      default:
+        this.updateNormalDrugBenefit(drug);
     }
-
-    if (drug.name == "Herbal Tea") {
-      this.updateHerbalTeaBenefit(drug);
-      return;
-    }
-
-    if (drug.name == "Fervex") {
-      this.updateFervexBenefit(drug);
-      return;
-    }
-
-    this.updateNormalDrugBenefit(drug);
   }
 
   updateNormalDrugBenefit(drug) {
@@ -73,7 +70,7 @@ export class Pharmacy {
   }
 
   updateExpiration(drug) {
-    if (drug.name != "Magic Pill") {
+    if (drug.name !== "Magic Pill") {
       drug.expiresIn = drug.expiresIn - 1;
     }
   }
