@@ -20,32 +20,55 @@ export class Pharmacy {
   }
 
   updateBenefit(drug) {
-    if (drug.name != "Herbal Tea" && drug.name != "Fervex") {
-      if (drug.benefit > 0 && drug.name != "Magic Pill") {
-        drug.benefit = drug.benefit - 1;
-      }
-    } else if (drug.benefit < 50) {
-      drug.benefit = drug.benefit + 1;
-      if (drug.name == "Fervex") {
-        if (drug.expiresIn < 11 && drug.benefit < 50) {
-          drug.benefit = drug.benefit + 1;
-        }
-        if (drug.expiresIn < 6 && drug.benefit < 50) {
-          drug.benefit = drug.benefit + 1;
-        }
-      }
+    if (drug.name == "Magic Pill") {
+      return;
     }
 
+    if (drug.name == "Herbal Tea") {
+      this.updateHerbalTeaBenefit(drug);
+      return;
+    }
+
+    if (drug.name == "Fervex") {
+      this.updateFervexBenefit(drug);
+      return;
+    }
+
+    this.updateNormalDrugBenefit(drug);
+  }
+
+  updateNormalDrugBenefit(drug) {
+    if (drug.benefit > 0) {
+      drug.benefit = drug.benefit - 1;
+    }
+    if (drug.expiresIn <= 0 && drug.benefit > 0) {
+      drug.benefit = drug.benefit - 1;
+    }
+  }
+
+  updateHerbalTeaBenefit(drug) {
+    if (drug.benefit < 50) {
+      drug.benefit = drug.benefit + 1;
+    }
+    if (drug.expiresIn <= 0 && drug.benefit < 50) {
+      drug.benefit = drug.benefit + 1;
+    }
+  }
+
+  updateFervexBenefit(drug) {
     if (drug.expiresIn <= 0) {
-      if (drug.name == "Herbal Tea") {
-        if (drug.benefit < 50) {
-          drug.benefit = drug.benefit + 1;
-        }
-      } else if (drug.name == "Fervex") {
-        drug.benefit = drug.benefit - drug.benefit;
-      } else if (drug.benefit > 0 && drug.name != "Magic Pill") {
-        drug.benefit = drug.benefit - 1;
-      }
+      drug.benefit = drug.benefit - drug.benefit;
+      return;
+    }
+
+    if (drug.benefit < 50) {
+      drug.benefit = drug.benefit + 1;
+    }
+    if (drug.expiresIn < 11 && drug.benefit < 50) {
+      drug.benefit = drug.benefit + 1;
+    }
+    if (drug.expiresIn < 6 && drug.benefit < 50) {
+      drug.benefit = drug.benefit + 1;
     }
   }
 
